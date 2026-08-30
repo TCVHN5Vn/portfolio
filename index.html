@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mariem Kbaier — AI Developer, Computer Vision & Edge Deployment</title>
+<meta name="description" content="AI Developer working on computer vision, deep learning and real-time edge inference. Research on test-time adaptation under distribution shift.">
+<meta name="author" content="Mariem Kbaier">
+
+<meta property="og:title" content="Mariem Kbaier — AI Developer">
+<meta property="og:description" content="Computer vision, deep learning, and models that hold up outside the lab.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://TCVHN5Vn.github.io/portfolio/">
+<meta name="theme-color" content="#E9EAEF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1117" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://TCVHN5Vn.github.io/portfolio/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%232A24C6'/%3E%3Ctext x='32' y='44' font-family='Helvetica,Arial,sans-serif' font-size='34' font-weight='bold' fill='%23fff' text-anchor='middle'%3EMK%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --paper:#E9EAEF;
+  --surface:#FFFFFF;
+  --ink:#0F1117;
+  --ink-soft:#5C6270;
+  --line:#CFD2DC;
+  --indigo:#2A24C6;
+  --indigo-soft:#DEDCF7;
+  --amber:#E08700;
+  --amber-soft:#F8E6C6;
+
+  --display:'Bricolage Grotesque',system-ui,sans-serif;
+  --body:'Public Sans',system-ui,-apple-system,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+
+  --gut:clamp(20px,5vw,64px);
+  --maxw:1180px;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+img,video,canvas{display:block;max-width:100%}
+a{color:inherit}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--gut)}
+
+/* ---------- utility type ---------- */
+.eyebrow{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+  display:flex;align-items:center;gap:10px;
+  margin:0 0 28px;
+}
+.eyebrow::after{content:"";flex:1;height:1px;background:var(--line)}
+
+h1,h2,h3{font-family:var(--display);font-weight:800;letter-spacing:-.03em;line-height:1.02;margin:0}
+h2{font-size:clamp(30px,4.6vw,54px)}
+h3{font-size:19px;letter-spacing:-.01em;font-weight:600}
+p{margin:0 0 16px}
+.lede{font-size:clamp(16px,1.9vw,19px);color:var(--ink-soft);max-width:62ch}
+
+/* ---------- nav ---------- */
+header.nav{
+  position:sticky;top:0;z-index:50;
+  background:rgba(233,234,239,.86);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.nav-in{
+  max-width:var(--maxw);margin:0 auto;padding:0 var(--gut);
+  height:60px;display:flex;align-items:center;justify-content:space-between;gap:20px;
+}
+.brand{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.brand b{font-weight:500}
+.nav-links{display:flex;gap:26px}
+.nav-links a{
+  font-family:var(--mono);font-size:12px;letter-spacing:.06em;
+  text-decoration:none;color:var(--ink-soft);padding:4px 0;position:relative;
+}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a::after{
+  content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--indigo);transition:width .22s ease;
+}
+.nav-links a:hover::after{width:100%}
+@media(max-width:760px){
+  .nav-in{gap:12px}
+  .nav-links{gap:18px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .nav-links::-webkit-scrollbar{display:none}
+  .nav-links a{white-space:nowrap}
+  .brand b{display:none}
+}
+@media(max-width:420px){.brand{font-size:11px}}
+
+/* ---------- masthead ---------- */
+.masthead{
+  display:grid;grid-template-columns:auto 1fr;gap:clamp(20px,3.4vw,38px);
+  align-items:center;padding-bottom:clamp(30px,4.5vw,46px);
+  border-bottom:1px solid var(--line);
+}
+.portrait{
+  margin:0;width:clamp(96px,13vw,164px);aspect-ratio:1/1;
+  background:var(--surface);border:1px solid var(--line);
+  overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.portrait img{width:100%;height:100%;object-fit:cover}
+.portrait .initials{
+  font-family:var(--display);font-weight:800;letter-spacing:-.04em;
+  font-size:clamp(30px,4.4vw,52px);color:var(--indigo);line-height:1;
+}
+.name-kicker{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-soft);margin:0 0 10px;
+}
+.name{
+  font-family:var(--display);font-weight:800;letter-spacing:-.035em;line-height:.94;
+  font-size:clamp(38px,7.4vw,86px);margin:0;
+}
+.role{
+  font-family:var(--display);font-weight:600;letter-spacing:-.015em;
+  font-size:clamp(15px,2.1vw,24px);margin:12px 0 0;color:var(--indigo);
+}
+.role span,.whereami span{color:var(--line);padding:0 2px}
+.whereami{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;
+  color:var(--ink-soft);margin:9px 0 0;
+}
+@media(max-width:560px){
+  .masthead{grid-template-columns:1fr;gap:20px}
+}
+
+/* ---------- hero ---------- */
+.hero{padding:clamp(30px,5vw,54px) 0 clamp(40px,6vw,72px)}
+.hero-grid{
+  margin-top:clamp(36px,5.5vw,64px);
+  display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,5vw,64px);align-items:center;
+}
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:36px}}
+
+.hero h1{font-size:clamp(31px,5.1vw,58px)}
+.hero h1 em{font-style:normal;color:var(--indigo)}
+.hero .lede{margin-top:22px}
+
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+.btn{
+  font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;
+  text-decoration:none;padding:11px 18px;border:1px solid var(--ink);
+  display:inline-flex;align-items:center;gap:8px;transition:.18s ease;
+}
+.btn.solid{background:var(--ink);color:var(--paper)}
+.btn.solid:hover{background:var(--indigo);border-color:var(--indigo)}
+.btn.ghost:hover{background:var(--ink);color:var(--paper)}
+
+/* signature visual */
+.viz{
+  background:var(--surface);
+  border:1px solid var(--line);
+  padding:14px 14px 12px;
+}
+.viz canvas{width:100%;height:auto;aspect-ratio:4/3}
+.viz-cap{
+  display:flex;flex-wrap:wrap;gap:14px;align-items:center;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;color:var(--ink-soft);
+  margin-top:10px;padding-top:10px;border-top:1px solid var(--line);
+}
+.key{display:inline-flex;align-items:center;gap:6px}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.dash{width:16px;height:0;border-top:1px dashed var(--ink-soft);display:inline-block}
+.solidline{width:16px;height:0;border-top:2px solid var(--indigo);display:inline-block}
+
+/* ---------- metrics ---------- */
+.metrics{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+}
+@media(max-width:720px){.metrics{grid-template-columns:repeat(2,1fr)}}
+.metric{padding:22px 20px 20px;border-right:1px solid var(--line)}
+.metric:last-child{border-right:none}
+@media(max-width:720px){
+  .metric:nth-child(2n){border-right:none}
+  .metric:nth-child(-n+2){border-bottom:1px solid var(--line)}
+}
+.metric .num{font-family:var(--display);font-size:clamp(26px,3.4vw,36px);font-weight:800;letter-spacing:-.03em;line-height:1}
+.metric .lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft);margin-top:8px}
+
+/* ---------- sections ---------- */
+section{padding:clamp(56px,8vw,100px) 0}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,60px)}
+@media(max-width:860px){.two-col{grid-template-columns:1fr;gap:32px}}
+
+.capsets{display:grid;gap:22px}
+.capset{border-top:1px solid var(--line);padding-top:14px}
+.capset h4{margin:0 0 6px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;color:var(--indigo)}
+.capset p{margin:0;font-size:15px;color:var(--ink-soft)}
+
+/* ---------- timeline ---------- */
+.tl-item{
+  display:grid;grid-template-columns:150px 1fr;gap:clamp(16px,3vw,40px);
+  padding:26px 0;border-top:1px solid var(--line);
+}
+.tl-item:last-child{border-bottom:1px solid var(--line)}
+@media(max-width:760px){.tl-item{grid-template-columns:1fr;gap:10px}}
+.tl-when{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--ink-soft);padding-top:4px}
+.tl-when .now{color:var(--indigo)}
+.tl-where{font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin:5px 0 12px}
+.tl-body ul{margin:0;padding-left:18px}
+.tl-body li{margin-bottom:8px;color:var(--ink-soft);font-size:15px}
+.tl-body li b{color:var(--ink);font-weight:600}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.tag{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;
+  border:1px solid var(--line);padding:3px 8px;color:var(--ink-soft);background:var(--surface);
+}
+
+/* ---------- demos ---------- */
+.demo{border-top:1px solid var(--line);padding-top:32px;margin-top:44px}
+.demo:first-of-type{margin-top:0}
+.demo-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(24px,4vw,48px);align-items:start}
+@media(max-width:900px){.demo-grid{grid-template-columns:1fr;gap:26px}}
+
+.media{
+  background:var(--surface);border:1px solid var(--line);
+  aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;
+}
+.media video,.media img{width:100%;height:100%;object-fit:cover}
+.media-empty{
+  text-align:center;padding:24px;font-family:var(--mono);font-size:11px;line-height:1.8;color:var(--ink-soft);letter-spacing:.03em;
+}
+.media-empty .slot{color:var(--indigo);display:block;margin-top:6px;word-break:break-all}
+.media-empty .icon{font-size:20px;display:block;margin-bottom:10px;opacity:.5}
+
+.demo-kicker{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
+.demo h3{font-size:clamp(21px,2.6vw,28px);font-weight:800;letter-spacing:-.02em;margin-bottom:12px}
+.demo p{font-size:15px;color:var(--ink-soft)}
+.bullets{list-style:none;padding:0;margin:16px 0 0}
+.bullets li{font-size:14px;color:var(--ink-soft);padding-left:18px;position:relative;margin-bottom:7px}
+.bullets li::before{content:"";position:absolute;left:0;top:9px;width:7px;height:1px;background:var(--indigo)}
+
+/* ---------- other work ---------- */
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:36px}
+@media(max-width:860px){.grid-3{grid-template-columns:1fr}}
+.card{background:var(--paper);padding:24px 22px 26px}
+.card h4{font-family:var(--display);font-size:17px;font-weight:600;letter-spacing:-.01em;margin:0 0 10px}
+.card p{font-size:14px;color:var(--ink-soft);margin:0}
+
+/* ---------- skills ---------- */
+.skills{display:grid;grid-template-columns:repeat(2,1fr);gap:26px 48px;margin-top:36px}
+@media(max-width:760px){.skills{grid-template-columns:1fr}}
+.skillrow h4{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--indigo);font-weight:500;margin:0 0 12px}
+.skillrow .tags .tag{background:transparent}
+
+/* ---------- education ---------- */
+.edu{display:grid;grid-template-columns:150px 1fr;gap:clamp(16px,3vw,40px);padding:22px 0;border-top:1px solid var(--line)}
+.edu:last-of-type{border-bottom:1px solid var(--line)}
+@media(max-width:760px){.edu{grid-template-columns:1fr;gap:8px}}
+.edu .deg{font-size:15px;color:var(--ink-soft);margin:4px 0 0}
+
+/* ---------- contact ---------- */
+.contact{background:var(--ink);color:var(--paper)}
+.contact h2{color:var(--surface)}
+.contact .lede{color:#A8AEBE}
+.contact .eyebrow{color:#8C93A6}
+.contact .eyebrow::after{background:#333846}
+.clinks{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#2A2F3B;border:1px solid #2A2F3B;margin-top:40px}
+@media(max-width:760px){.clinks{grid-template-columns:1fr}}
+.clink{background:var(--ink);padding:22px;text-decoration:none;display:block;transition:.18s}
+.clink:hover{background:#191C25}
+.clink .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#8C93A6}
+.clink .v{font-size:15px;margin-top:8px;color:var(--surface);word-break:break-all}
+.clink:hover .v{color:#B9B5FF}
+
+footer{background:var(--ink);color:#6E7587;border-top:1px solid #2A2F3B}
+.foot-in{
+  max-width:var(--maxw);margin:0 auto;padding:22px var(--gut);
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  font-family:var(--mono);font-size:11px;letter-spacing:.04em;
+}
+
+/* ---------- reveal ---------- */
+.rv{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;transition:none}
+  html{scroll-behavior:auto}
+}
+:focus-visible{outline:2px solid var(--indigo);outline-offset:3px}
+/* ---------- skip link ---------- */
+.skip{
+  position:absolute;left:-9999px;top:0;z-index:100;
+  background:var(--ink);color:var(--paper);padding:10px 16px;
+  font-family:var(--mono);font-size:12px;text-decoration:none;
+}
+.skip:focus{left:var(--gut)}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#top">Skip to content</a>
+
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="#top">Mariem Kbaier <b>/ AI Developer</b></a>
+    <nav class="nav-links">
+      <a href="#focus">Focus</a>
+      <a href="#experience">Experience</a>
+      <a href="#work">Work</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+
+    <div class="masthead">
+      <figure class="portrait" data-photo="assets/mariem.jpg" data-initials="MK" role="img" aria-label="Mariem Kbaier"></figure>
+      <div class="masthead-text">
+        <p class="name-kicker">Portfolio</p>
+        <p class="name">Mariem Kbaier</p>
+        <p class="role">AI Developer <span>·</span> Computer Vision &amp; Edge Deployment</p>
+        <p class="whereami">Montréal, Canada <span>·</span> open to relocation</p>
+      </div>
+    </div>
+
+    <div class="hero-grid">
+      <div>
+        <h1>Models that hold up <em>outside the lab.</em></h1>
+        <p class="lede">
+          I'm an AI developer working on computer vision and deep learning where the
+          conditions keep changing — sensor drift, unseen environments, and hardware
+          with a strict latency budget. Currently researching test-time adaptation at
+          Concordia University, after two years shipping vision models onto robots.
+        </p>
+        <div class="hero-actions">
+          <a class="btn solid" href="#work">See the work</a>
+          <a class="btn ghost" href="mailto:kbaiermeryem@gmail.com">Get in touch</a>
+        </div>
+      </div>
+
+      <figure class="viz" aria-label="Illustration of distribution shift: a model's decision boundary drifting away from new data, then adapting to it.">
+        <canvas id="shift" width="800" height="600" role="img" aria-label="Animated scatter plot: two classes of points drift away from a frozen decision boundary while an adapted boundary tracks them."></canvas>
+        <figcaption class="viz-cap">
+          <span class="key"><span class="dot" style="background:var(--indigo)"></span>Source data</span>
+          <span class="key"><span class="dot" style="background:var(--amber)"></span>Shifted data</span>
+          <span class="key"><span class="dash"></span>Frozen boundary</span>
+          <span class="key"><span class="solidline"></span>Adapted at test time</span>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- METRICS -->
+<div class="wrap">
+  <div class="metrics rv">
+    <div class="metric"><div class="num">&lt;30 ms</div><div class="lbl">Edge inference latency</div></div>
+    <div class="metric"><div class="num">0.94</div><div class="lbl">mAP, deployed detector</div></div>
+    <div class="metric"><div class="num">~70%</div><div class="lbl">Less manual labeling</div></div>
+    <div class="metric"><div class="num">3</div><div class="lbl">Countries worked in</div></div>
+  </div>
+</div>
+
+<!-- FOCUS -->
+<section id="focus">
+  <div class="wrap">
+    <p class="eyebrow">Focus</p>
+    <div class="two-col">
+      <div>
+        <h2>Where a model breaks is the interesting part.</h2>
+        <p class="lede" style="margin-top:22px">
+          Most vision models look excellent on a held-out test set and disappoint the
+          moment lighting, sensors, or the environment change. My work sits on both
+          sides of that gap: the research side, adapting models to shifted data without
+          new labels, and the engineering side, getting them small and fast enough to
+          run on the device itself.
+        </p>
+        <p class="lede">
+          I've done that on a quadruped robot in the field, on a Raspberry Pi reading
+          ECG signals, and now on sensor data from smart buildings.
+        </p>
+      </div>
+      <div class="capsets">
+        <div class="capset">
+          <h4>Computer vision</h4>
+          <p>Object detection, segmentation, and multi-object tracking — from dataset design through to a model running on a moving platform.</p>
+        </div>
+        <div class="capset">
+          <h4>Robustness &amp; adaptation</h4>
+          <p>Test-time adaptation under distribution shift. Benchmarking DIGA, PETAL, and PeTTA; designing ablations and evaluation protocols that hold up to review.</p>
+        </div>
+        <div class="capset">
+          <h4>Edge deployment</h4>
+          <p>ONNX and TensorFlow Lite conversion, quantization, and latency profiling on Raspberry Pi, STM32, and the Unitree Go2.</p>
+        </div>
+        <div class="capset">
+          <h4>Data pipelines</h4>
+          <p>Automated annotation with SAM2, Grounding DINO, and SAHI — plus the pseudo-label quality checks that decide whether it's actually usable.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="wrap">
+    <p class="eyebrow">Experience</p>
+    <h2>Research, then production, then both.</h2>
+
+    <div style="margin-top:44px">
+
+      <article class="tl-item rv">
+        <div class="tl-when"><span class="now">Jan 2026 — Present</span></div>
+        <div class="tl-body">
+          <h3>Research Student, Machine Learning</h3>
+          <div class="tl-where">Concordia University · Montréal, Canada</div>
+          <ul>
+            <li>Developing <b>test-time adaptation</b> methods for models facing distribution shift, benchmarking DIGA, PETAL, and PeTTA on tabular sensor data from smart buildings.</li>
+            <li>Designing the ablation studies and evaluation protocols behind the comparison, with a manuscript in preparation for peer review.</li>
+          </ul>
+          <div class="tags"><span class="tag">PyTorch</span><span class="tag">TTA</span><span class="tag">Distribution shift</span><span class="tag">Benchmarking</span></div>
+        </div>
+      </article>
+
+      <article class="tl-item rv">
+        <div class="tl-when">Feb 2025 — Dec 2025</div>
+        <div class="tl-body">
+          <h3>AI &amp; Robotics Engineer, R&amp;D</h3>
+          <div class="tl-where">EagleProjects Tunisia · Tunis, Tunisia</div>
+          <ul>
+            <li>Deployed object detection, fire detection, and people-tracking models on a <b>Unitree Go2</b> quadruped, optimized to run <b>under 30 ms</b> on-device via ONNX and TensorFlow Lite.</li>
+            <li>Built an automated annotation pipeline with SAM2, Grounding DINO, and SAHI that cut manual labeling by roughly <b>70%</b>; audited pseudo-label noise and got downstream models to <b>mAP 0.94</b>.</li>
+          </ul>
+          <div class="tags"><span class="tag">ONNX</span><span class="tag">TF Lite</span><span class="tag">SAM2</span><span class="tag">Grounding DINO</span><span class="tag">SAHI</span><span class="tag">Unitree Go2</span></div>
+        </div>
+      </article>
+
+      <article class="tl-item rv">
+        <div class="tl-when">Mar 2024 — Jul 2024</div>
+        <div class="tl-body">
+          <h3>Research Intern, Signal Processing &amp; ML</h3>
+          <div class="tl-where">University of Paris VIII · Paris, France</div>
+          <ul>
+            <li>Benchmarked LSTM, GRU, and CNN architectures for <b>ECG arrhythmia detection</b> under heavy class imbalance and noisy signals, comparing preprocessing strategies head to head.</li>
+            <li>Deployed the best model on a <b>Raspberry Pi</b> and validated accuracy and latency under real hardware constraints.</li>
+          </ul>
+          <div class="tags"><span class="tag">LSTM / GRU / CNN</span><span class="tag">Signal processing</span><span class="tag">Raspberry Pi</span></div>
+        </div>
+      </article>
+
+      <article class="tl-item rv">
+        <div class="tl-when">Aug 2023 — Sep 2023</div>
+        <div class="tl-body">
+          <h3>Data Science Intern, Multimodal Learning</h3>
+          <div class="tl-where">ITGUST · Ariana, Tunisia</div>
+          <ul>
+            <li>Built a real-time pipeline for <b>video-based stress inference</b>, fusing facial expression, eye-blink dynamics, and head motion into a lightweight low-latency classifier.</li>
+          </ul>
+          <div class="tags"><span class="tag">OpenCV</span><span class="tag">Multimodal fusion</span><span class="tag">Real-time</span></div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- WORK / DEMOS -->
+<section id="work">
+  <div class="wrap">
+    <p class="eyebrow">Selected work</p>
+    <h2>Two projects, in motion.</h2>
+    <p class="lede" style="margin-top:20px">Both are running systems, not slide decks.</p>
+
+    <div style="margin-top:52px">
+
+      <!-- DEMO 1 -->
+      <article class="demo rv">
+        <div class="demo-grid">
+          <figure class="media" data-media="assets/tta-demo.mp4" data-type="video" data-poster="assets/tta-poster.jpg" style="margin:0"></figure>
+          <div>
+            <div class="demo-kicker">Research · Concordia University</div>
+            <h3>Test-Time Adaptation under distribution shift</h3>
+            <p>
+              A model trained in one building doesn't stay accurate in the next one —
+              sensors drift, occupancy patterns differ, seasons change. This work
+              adapts the model at inference time, using only the incoming unlabeled
+              stream, and measures how far that gets you.
+            </p>
+            <p>
+              I benchmark DIGA, PETAL, and PeTTA on tabular sensor data from smart
+              buildings, with ablations isolating what each method actually
+              contributes and where each one collapses under continual shift.
+            </p>
+            <ul class="bullets">
+              <li>Adaptation with no target labels and no retraining</li>
+              <li>Controlled ablations across three adaptation strategies</li>
+              <li>Manuscript in preparation for peer review</li>
+            </ul>
+            <div class="tags">
+              <span class="tag">PyTorch</span><span class="tag">DIGA</span><span class="tag">PETAL</span><span class="tag">PeTTA</span><span class="tag">Evaluation design</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- DEMO 2 -->
+      <article class="demo rv">
+        <div class="demo-grid">
+          <figure class="media" data-media="assets/llm-demo.mp4" data-type="video" data-poster="assets/llm-poster.jpg" style="margin:0"></figure>
+          <div>
+            <div class="demo-kicker">Prototype · LLM systems</div>
+            <h3>LLM assistant for document &amp; data analysis</h3>
+            <p>
+              A Python assistant that reads long documents and structured data, then
+              answers questions about them — summaries, targeted Q&amp;A, and extraction
+              of specific fields into a usable format.
+            </p>
+            <p>
+              The interesting part was making the answers trustworthy: grounding
+              responses in retrieved passages, tightening prompts to cut confident
+              fabrication, and splitting the flow into modular steps that can be
+              inspected one at a time.
+            </p>
+            <ul class="bullets">
+              <li>Retrieval-grounded answers over user documents</li>
+              <li>Prompt design aimed at reducing hallucination</li>
+              <li>Modular, agent-style pipeline with inspectable steps</li>
+            </ul>
+            <div class="tags">
+              <span class="tag">Python</span><span class="tag">OpenAI API</span><span class="tag">RAG</span><span class="tag">Prompt engineering</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- OTHER -->
+    <div style="margin-top:64px">
+      <p class="eyebrow">Also built</p>
+      <div class="grid-3">
+        <div class="card">
+          <h4>Real-time hand gesture recognition</h4>
+          <p>YOLOv5 detection pipeline at mAP ≈ 0.87, converted to TensorFlow Lite and ONNX for embedded deployment.</p>
+        </div>
+        <div class="card">
+          <h4>Fault detection for industrial systems</h4>
+          <p>Anomaly detection on multivariate sensor time-series, combining fuzzy logic with learned models for interpretable predictive maintenance.</p>
+        </div>
+        <div class="card">
+          <h4>IoT intrusion detection</h4>
+          <p>Deep networks on network traffic for real-time DDoS detection, evaluated for generalization as traffic distributions evolve.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="wrap">
+    <p class="eyebrow">Toolkit</p>
+    <h2>What I work with.</h2>
+    <div class="skills">
+      <div class="skillrow">
+        <h4>Languages</h4>
+        <div class="tags"><span class="tag">Python</span><span class="tag">MATLAB</span><span class="tag">C</span></div>
+      </div>
+      <div class="skillrow">
+        <h4>ML &amp; deep learning</h4>
+        <div class="tags"><span class="tag">PyTorch</span><span class="tag">TensorFlow</span><span class="tag">scikit-learn</span><span class="tag">NumPy</span><span class="tag">Pandas</span><span class="tag">CNN / LSTM / GRU</span></div>
+      </div>
+      <div class="skillrow">
+        <h4>Vision &amp; deployment</h4>
+        <div class="tags"><span class="tag">YOLOv5</span><span class="tag">SAM2</span><span class="tag">Grounding DINO</span><span class="tag">SAHI</span><span class="tag">ONNX</span><span class="tag">TensorFlow Lite</span><span class="tag">OpenCV</span></div>
+      </div>
+      <div class="skillrow">
+        <h4>Hardware</h4>
+        <div class="tags"><span class="tag">Raspberry Pi</span><span class="tag">STM32</span><span class="tag">ESP32</span><span class="tag">Arduino</span><span class="tag">FPGA</span><span class="tag">Unitree Go2</span></div>
+      </div>
+      <div class="skillrow">
+        <h4>Tooling</h4>
+        <div class="tags"><span class="tag">Linux</span><span class="tag">Git</span><span class="tag">Docker</span><span class="tag">LaTeX</span></div>
+      </div>
+      <div class="skillrow">
+        <h4>Languages spoken</h4>
+        <div class="tags"><span class="tag">Arabic — native</span><span class="tag">French — professional</span><span class="tag">English — IELTS 6.5</span></div>
+      </div>
+    </div>
+
+    <div style="margin-top:64px">
+      <p class="eyebrow">Education &amp; leadership</p>
+      <div class="edu">
+        <div class="tl-when">2021 — 2024</div>
+        <div>
+          <h3>National Engineering School of Gabès (ENIG)</h3>
+          <p class="deg">Engineering Degree (B.Eng.), Electrical and Automation Engineering · Gabès, Tunisia</p>
+        </div>
+      </div>
+      <div class="edu">
+        <div class="tl-when">2018 — 2021</div>
+        <div>
+          <h3>ESPRIT — Preparatory Cycle</h3>
+          <p class="deg">Mathematics, statistics, linear algebra, physics, programming · Ariana, Tunisia</p>
+        </div>
+      </div>
+      <div class="edu">
+        <div class="tl-when">2023 — 2024</div>
+        <div>
+          <h3>Co-Founder &amp; Vice-President, Alliance of Engineers</h3>
+          <p class="deg">Student organization for robotics, automation, and AI — ran technical workshops and project-based learning at ENIG.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact">
+  <div class="wrap">
+    <p class="eyebrow">Contact</p>
+    <h2>Open to AI and computer vision roles.</h2>
+    <p class="lede" style="margin-top:22px">
+      I'm looking for work on applied computer vision, model robustness, or edge
+      deployment — in industry or in a research group. Based in Montréal, open to
+      relocation.
+    </p>
+    <div class="clinks">
+      <a class="clink" href="mailto:kbaiermeryem@gmail.com">
+        <div class="k">Email</div><div class="v">kbaiermeryem@gmail.com</div>
+      </a>
+      <a class="clink" href="https://linkedin.com/in/kbaier-mariem" target="_blank" rel="noopener">
+        <div class="k">LinkedIn</div><div class="v">linkedin.com/in/kbaier-mariem</div>
+      </a>
+      <a class="clink" href="tel:+21692612816">
+        <div class="k">Phone</div><div class="v">+216 92 612 816</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="foot-in">
+    <span>© 2026 Mariem Kbaier</span>
+    <span>Built with HTML, CSS, and JavaScript</span>
+  </div>
+</footer>
+
+<script>
+/* ---------- signature: distribution shift visual ---------- */
+(function(){
+  const cv = document.getElementById('shift');
+  if(!cv) return;
+  const ctx = cv.getContext('2d');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const css = getComputedStyle(document.documentElement);
+  const INDIGO = css.getPropertyValue('--indigo').trim() || '#2A24C6';
+  const AMBER  = css.getPropertyValue('--amber').trim()  || '#E08700';
+  const LINE   = css.getPropertyValue('--line').trim()   || '#CFD2DC';
+  const SOFT   = css.getPropertyValue('--ink-soft').trim()|| '#5C6270';
+
+  // deterministic pseudo-random
+  let s = 42;
+  const rnd = () => { s = (s*1664525 + 1013904223) % 4294967296; return s/4294967296; };
+  const gauss = () => {
+    let u=0,v=0; while(u===0)u=rnd(); while(v===0)v=rnd();
+    return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);
+  };
+
+  const N = 60;
+  const clsA = [], clsB = [];
+  for(let i=0;i<N;i++){
+    clsA.push({x:-0.42+gauss()*0.17, y: 0.20+gauss()*0.17});
+    clsB.push({x: 0.40+gauss()*0.17, y:-0.22+gauss()*0.17});
+  }
+
+  function resize(){
+    const r = cv.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio||1, 2);
+    cv.width = Math.max(1, Math.round(r.width*dpr));
+    cv.height = Math.max(1, Math.round(r.width*0.75*dpr));
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    return {w:r.width, h:r.width*0.75};
+  }
+  let dim = resize();
+  window.addEventListener('resize', ()=>{ dim = resize(); if(reduce) draw(2.1); });
+
+  const P = (p, d) => ({ x: d.w/2 + p.x*d.w*0.74, y: d.h/2 - p.y*d.h*0.74 });
+
+  function boundary(a, b, d){
+    // perpendicular bisector of the two class centroids, clipped to canvas
+    const mx=(a.x+b.x)/2, my=(a.y+b.y)/2;
+    const dx=b.x-a.x, dy=b.y-a.y;
+    const len=Math.hypot(dx,dy)||1;
+    const px=-dy/len, py=dx/len;
+    const L=2.4;
+    return [P({x:mx-px*L,y:my-py*L},d), P({x:mx+px*L,y:my+py*L},d)];
+  }
+  const mean = arr => arr.reduce((m,p)=>({x:m.x+p.x/arr.length, y:m.y+p.y/arr.length}),{x:0,y:0});
+
+  function line(p1,p2,color,dash,width){
+    ctx.save();
+    ctx.strokeStyle=color; ctx.lineWidth=width; ctx.setLineDash(dash);
+    ctx.beginPath(); ctx.moveTo(p1.x,p1.y); ctx.lineTo(p2.x,p2.y); ctx.stroke();
+    ctx.restore();
+  }
+
+  function draw(t){
+    const d = dim;
+    ctx.clearRect(0,0,d.w,d.h);
+
+    // grid
+    ctx.strokeStyle = LINE; ctx.lineWidth = 1; ctx.globalAlpha = .55;
+    for(let i=1;i<6;i++){
+      ctx.beginPath(); ctx.moveTo(d.w*i/6,0); ctx.lineTo(d.w*i/6,d.h); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0,d.h*i/6); ctx.lineTo(d.w,d.h*i/6); ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+
+    // shift magnitude cycles 0 -> 1 -> 0
+    const phase = (Math.sin(t*0.32) + 1)/2;          // 0..1
+    const ang = 0.40*phase;
+    const shift = {x: 0.26*phase, y: -0.20*phase};
+
+    const rot = p => ({
+      x: p.x*Math.cos(ang) - p.y*Math.sin(ang) + shift.x,
+      y: p.x*Math.sin(ang) + p.y*Math.cos(ang) + shift.y
+    });
+
+    const tA = clsA.map(rot), tB = clsB.map(rot);
+
+    ctx.save();
+    ctx.beginPath(); ctx.rect(0,0,d.w,d.h); ctx.clip();
+
+    // frozen (source) boundary
+    const fb = boundary(mean(clsA), mean(clsB), d);
+    line(fb[0], fb[1], SOFT, [5,5], 1);
+
+    // adapted boundary
+    const ab = boundary(mean(tA), mean(tB), d);
+    line(ab[0], ab[1], INDIGO, [], 2);
+
+    // source points (ghosted)
+    ctx.globalAlpha = .22;
+    [[clsA,INDIGO],[clsB,AMBER]].forEach(([set,c])=>{
+      ctx.fillStyle=c;
+      set.forEach(p=>{ const q=P(p,d); ctx.beginPath(); ctx.arc(q.x,q.y,3,0,7); ctx.fill(); });
+    });
+
+    // shifted points
+    ctx.globalAlpha = .9;
+    [[tA,INDIGO],[tB,AMBER]].forEach(([set,c])=>{
+      ctx.fillStyle=c;
+      set.forEach(p=>{ const q=P(p,d); ctx.beginPath(); ctx.arc(q.x,q.y,3.4,0,7); ctx.fill(); });
+    });
+    ctx.globalAlpha = 1;
+    ctx.restore();
+
+    // shift readout
+    const label = 'distribution shift ' + (phase*100).toFixed(0).padStart(2,'0') + '%';
+    ctx.font = '10px "IBM Plex Mono", monospace';
+    const tw = ctx.measureText(label).width;
+    ctx.fillStyle = '#FFFFFF'; ctx.globalAlpha = .82;
+    ctx.fillRect(6, d.h-24, tw+14, 18);
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = SOFT;
+    ctx.fillText(label, 13, d.h - 11);
+  }
+
+  if(reduce){ draw(2.1); }
+  else {
+    const t0 = performance.now();
+    (function loop(now){ draw((now-t0)/1000); requestAnimationFrame(loop); })(t0);
+  }
+})();
+
+/* ---------- portrait: use the photo if it's there, initials if not ---------- */
+document.querySelectorAll('.portrait[data-photo]').forEach(fig => {
+  const fallback = () => {
+    fig.innerHTML = '<span class="initials">' + (fig.dataset.initials || '') + '</span>';
+  };
+  const img = new Image();
+  img.alt = 'Mariem Kbaier';
+  img.onload = () => { fig.innerHTML = ''; fig.appendChild(img); };
+  img.onerror = fallback;
+  img.src = fig.dataset.photo;
+  fallback();
+});
+
+/* ---------- demo media: load if present, otherwise show the slot ---------- */
+document.querySelectorAll('.media[data-media]').forEach(fig => {
+  const src = fig.dataset.media;
+  const type = fig.dataset.type || 'video';
+  const poster = fig.dataset.poster;
+
+  const placeholder = () => {
+    fig.innerHTML =
+      '<div class="media-empty"><span class="icon">▶</span>' +
+      'Demo goes here<span class="slot">' + src + '</span></div>';
+  };
+
+  if(type === 'image'){
+    const img = new Image();
+    img.alt = 'Project demo';
+    img.onerror = placeholder;
+    img.onload = () => fig.appendChild(img);
+    img.src = src;
+    return;
+  }
+
+  const v = document.createElement('video');
+  v.muted = true; v.loop = true; v.playsInline = true; v.autoplay = true;
+  v.setAttribute('muted',''); v.setAttribute('playsinline','');
+  if(poster) v.poster = poster;
+  let settled = false;
+  v.addEventListener('error', () => { if(!settled){ settled = true; placeholder(); } }, true);
+  v.addEventListener('loadeddata', () => { settled = true; v.play().catch(()=>{}); });
+  v.src = src;
+  fig.appendChild(v);
+  // Fall back to the slot label only if nothing arrived AND nothing is still
+  // downloading — a slow connection should not lose a demo that is on its way.
+  setTimeout(() => {
+    if(settled || v.readyState > 0) return;
+    if(v.networkState === HTMLMediaElement.NETWORK_LOADING) return;
+    settled = true; placeholder();
+  }, 4000);
+});
+
+/* ---------- scroll reveal ---------- */
+(function(){
+  const els = document.querySelectorAll('.rv');
+  if(!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    els.forEach(e=>e.classList.add('in')); return;
+  }
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{rootMargin:'0px 0px -60px 0px'});
+  els.forEach(e=>io.observe(e));
+})();
+</script>
+</body>
+</html>
