@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automated annotation pipeline — Mariem Kbaier</title>
+<meta name="description" content="Text-prompted automatic image labeling: SAHI sliced inference over MM-Grounding-DINO for zero-shot detection, SAM 2 for instance masks. Roughly 70% less manual labeling, downstream detector at mAP 0.94.">
+<meta name="author" content="Mariem Kbaier">
+
+<meta property="og:title" content="Automated annotation pipeline — Mariem Kbaier">
+<meta property="og:description" content="Zero-shot detection and segmentation that labels a dataset, then gets audited before anyone trains on it.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://TCVHN5Vn.github.io/portfolio/labelling.html">
+<meta name="theme-color" content="#E9EAEF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1117" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://TCVHN5Vn.github.io/portfolio/labelling.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%232A24C6'/%3E%3Ctext x='32' y='44' font-family='Helvetica,Arial,sans-serif' font-size='34' font-weight='bold' fill='%23fff' text-anchor='middle'%3EMK%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --paper:#E9EAEF;
+  --surface:#FFFFFF;
+  --ink:#0F1117;
+  --ink-soft:#5C6270;
+  --line:#CFD2DC;
+  --indigo:#2A24C6;
+  --indigo-soft:#DEDCF7;
+  --amber:#E08700;
+  --amber-soft:#F8E6C6;
+
+  --display:'Bricolage Grotesque',system-ui,sans-serif;
+  --body:'Public Sans',system-ui,-apple-system,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+
+  --gut:clamp(20px,5vw,64px);
+  --maxw:1180px;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+img,video{display:block;max-width:100%}
+a{color:inherit}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--gut)}
+
+.skip{
+  position:absolute;left:-9999px;top:0;background:var(--ink);color:var(--paper);
+  padding:10px 16px;font-family:var(--mono);font-size:12px;z-index:100;
+}
+.skip:focus{left:0}
+
+/* ---------- utility type ---------- */
+.eyebrow{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+  display:flex;align-items:center;gap:10px;
+  margin:0 0 28px;
+}
+.eyebrow::after{content:"";flex:1;height:1px;background:var(--line)}
+
+h1,h2,h3{font-family:var(--display);font-weight:800;letter-spacing:-.03em;line-height:1.02;margin:0}
+h2{font-size:clamp(26px,3.6vw,40px)}
+h3{font-size:19px;letter-spacing:-.01em;font-weight:600}
+p{margin:0 0 16px}
+.lede{font-size:clamp(16px,1.9vw,19px);color:var(--ink-soft);max-width:62ch}
+
+/* ---------- nav ---------- */
+header.nav{
+  position:sticky;top:0;z-index:50;
+  background:rgba(233,234,239,.86);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.nav-in{
+  max-width:var(--maxw);margin:0 auto;padding:0 var(--gut);
+  height:60px;display:flex;align-items:center;justify-content:space-between;gap:20px;
+}
+.brand{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.brand b{font-weight:500}
+.nav-links{display:flex;gap:26px}
+.nav-links a{
+  font-family:var(--mono);font-size:12px;letter-spacing:.06em;
+  text-decoration:none;color:var(--ink-soft);padding:4px 0;position:relative;
+}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a::after{
+  content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--indigo);transition:width .22s ease;
+}
+.nav-links a:hover::after{width:100%}
+@media(max-width:760px){
+  .nav-in{gap:12px}
+  .nav-links{gap:18px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .nav-links::-webkit-scrollbar{display:none}
+  .nav-links a{white-space:nowrap}
+  .brand b{display:none}
+}
+@media(max-width:420px){.brand{font-size:11px}}
+
+/* ---------- hero ---------- */
+.phero{padding:clamp(44px,7vw,84px) 0 clamp(28px,4vw,44px)}
+.backlink{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink-soft);text-decoration:none;display:inline-flex;align-items:center;gap:8px;margin-bottom:30px;
+}
+.backlink:hover{color:var(--indigo)}
+.pkicker{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:14px}
+.phero h1{font-size:clamp(30px,5.4vw,60px);letter-spacing:-.035em;line-height:1.0}
+.phero h1 em{font-style:normal;color:var(--indigo)}
+.phero .lede{margin-top:24px}
+
+.btn{
+  font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;
+  text-decoration:none;padding:11px 18px;border:1px solid var(--ink);
+  display:inline-flex;align-items:center;gap:8px;transition:.18s ease;
+}
+.btn.solid{background:var(--ink);color:var(--paper)}
+.btn.solid:hover{background:var(--indigo);border-color:var(--indigo)}
+.btn.ghost:hover{background:var(--ink);color:var(--paper)}
+.phero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+
+/* ---------- metrics ---------- */
+.metrics{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  margin-top:clamp(34px,5vw,54px);
+}
+@media(max-width:720px){.metrics{grid-template-columns:repeat(2,1fr)}}
+.metric{padding:22px 20px 20px;border-right:1px solid var(--line)}
+.metric:last-child{border-right:none}
+@media(max-width:720px){
+  .metric:nth-child(2n){border-right:none}
+  .metric:nth-child(-n+2){border-bottom:1px solid var(--line)}
+}
+.metric .num{font-family:var(--display);font-size:clamp(26px,3.4vw,36px);font-weight:800;letter-spacing:-.03em;line-height:1}
+.metric .lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft);margin-top:8px}
+
+/* ---------- sections ---------- */
+section{padding:clamp(44px,6.5vw,80px) 0}
+section.tight{padding-top:clamp(30px,4vw,46px)}
+
+/* ---------- walkthrough player ---------- */
+.player{
+  background:var(--surface);border:1px solid var(--line);
+  aspect-ratio:16/9;overflow:hidden;position:relative;margin:0;
+}
+.player video{width:100%;height:100%;object-fit:cover;background:#14151b}
+.player-empty{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;padding:24px;
+  font-family:var(--mono);font-size:11px;line-height:1.8;color:var(--ink-soft);letter-spacing:.03em;
+}
+.player-empty .icon{font-size:20px;margin-bottom:10px;opacity:.5}
+.player-empty .slot{color:var(--indigo);margin-top:6px;word-break:break-all}
+.caption{
+  font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--ink-soft);
+  margin-top:12px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+}
+
+/* ---------- pipeline ---------- */
+.steps{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--line);border:1px solid var(--line);margin-top:38px;
+}
+@media(max-width:900px){.steps{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.steps{grid-template-columns:1fr}}
+.step{background:var(--paper);padding:24px 22px 26px}
+.step .n{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;color:var(--indigo);
+  display:block;margin-bottom:12px;
+}
+.step h4{font-family:var(--display);font-size:17px;font-weight:600;letter-spacing:-.01em;margin:0 0 10px}
+.step p{font-size:14px;color:var(--ink-soft);margin:0}
+.step code{font-family:var(--mono);font-size:12.5px;color:var(--ink)}
+
+/* ---------- prose + callout ---------- */
+.prose{max-width:68ch}
+.prose p{color:var(--ink-soft);font-size:15.5px}
+.prose p b{color:var(--ink);font-weight:600}
+.bullets{list-style:none;padding:0;margin:20px 0 0;max-width:68ch}
+.bullets li{font-size:15px;color:var(--ink-soft);padding-left:18px;position:relative;margin-bottom:9px}
+.bullets li::before{content:"";position:absolute;left:0;top:11px;width:7px;height:1px;background:var(--indigo)}
+.bullets li b{color:var(--ink);font-weight:600}
+
+.callout{
+  border-left:2px solid var(--indigo);background:var(--surface);
+  padding:24px 26px;margin-top:34px;max-width:68ch;
+}
+.callout p:last-child{margin-bottom:0}
+
+/* ---------- config table ---------- */
+.cfg{
+  margin-top:34px;border:1px solid var(--line);background:var(--surface);
+  font-family:var(--mono);font-size:12.5px;overflow-x:auto;
+}
+.cfg table{border-collapse:collapse;width:100%;min-width:440px}
+.cfg td{padding:11px 18px;border-bottom:1px solid var(--line);vertical-align:top}
+.cfg tr:last-child td{border-bottom:none}
+.cfg td:first-child{color:var(--ink-soft);white-space:nowrap;width:1%}
+.cfg td:last-child{color:var(--ink)}
+
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:22px}
+.tag{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;
+  border:1px solid var(--line);padding:3px 8px;color:var(--ink-soft);background:var(--surface);
+}
+
+/* ---------- next ---------- */
+.next{background:var(--ink);color:var(--paper)}
+.next h2{color:var(--surface)}
+.next .eyebrow{color:#8C93A6}
+.next .eyebrow::after{background:#333846}
+.next .lede{color:#A8AEBE}
+.next .btn{border-color:#3A404F;color:var(--paper)}
+.next .btn:hover{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+
+footer{background:var(--ink);color:#6E7587;border-top:1px solid #2A2F3B}
+.foot-in{
+  max-width:var(--maxw);margin:0 auto;padding:22px var(--gut);
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  font-family:var(--mono);font-size:11px;letter-spacing:.04em;
+}
+
+/* ---------- reveal ---------- */
+.rv{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;transition:none}
+  html{scroll-behavior:auto}
+}
+:focus-visible{outline:2px solid var(--indigo);outline-offset:3px}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#top">Skip to content</a>
+
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="index.html">Mariem Kbaier <b>/ AI Developer</b></a>
+    <nav class="nav-links">
+      <a href="index.html#focus">Focus</a>
+      <a href="index.html#experience">Experience</a>
+      <a href="index.html#work">Work</a>
+      <a href="index.html#skills">Skills</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="phero">
+  <div class="wrap">
+    <a class="backlink" href="index.html#work">← Back to work</a>
+    <div class="pkicker">Applied · Annotation tooling</div>
+    <h1>Labeling a detection dataset <em>without labeling it by hand</em>.</h1>
+    <p class="lede">
+      A text-prompted annotation pipeline: zero-shot detection over sliced imagery,
+      instance masks from SAM 2, and exports in the formats a training run actually
+      expects. It cut manual labeling by roughly 70% — but the part that decided
+      whether it was usable was auditing what the pipeline got wrong.
+    </p>
+    <div class="phero-actions">
+      <a class="btn solid" href="#walkthrough">Watch the walkthrough</a>
+      <a class="btn ghost" href="index.html#contact">Get in touch</a>
+    </div>
+
+    <div class="metrics">
+      <div class="metric"><div class="num">~70%</div><div class="lbl">Less manual labeling</div></div>
+      <div class="metric"><div class="num">0.94</div><div class="lbl">mAP, downstream detector</div></div>
+      <div class="metric"><div class="num">3</div><div class="lbl">Export formats</div></div>
+      <div class="metric"><div class="num">0-shot</div><div class="lbl">No task-specific training</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- WALKTHROUGH -->
+<section id="walkthrough" class="tight">
+  <div class="wrap">
+    <p class="eyebrow">Walkthrough</p>
+    <h2>Config, run, output.</h2>
+    <p class="lede" style="margin-top:18px;margin-bottom:32px">
+      75 seconds, no audio — the prompt and slicing settings, an inference run, and the
+      masks and label files that come out the other end.
+    </p>
+
+    <figure class="player rv" id="player"
+            data-media="assets/labelling-walkthrough.mp4"
+            data-poster="assets/labelling-walkthrough-poster.jpg"></figure>
+    <div class="caption">
+      <span>Thermal imagery, prompted with a single class: <code>person</code>.</span>
+      <span>1:15 · silent</span>
+    </div>
+  </div>
+</section>
+
+<!-- PIPELINE -->
+<section>
+  <div class="wrap">
+    <p class="eyebrow">How it works</p>
+    <h2>Four stages, one prompt.</h2>
+    <p class="lede" style="margin-top:18px">
+      The only task-specific input is a text prompt. Nothing in the chain is trained on
+      this dataset.
+    </p>
+
+    <div class="steps">
+      <div class="step">
+        <span class="n">01</span>
+        <h4>Slice</h4>
+        <p>SAHI cuts each frame into overlapping tiles before inference, so small and distant objects still occupy enough pixels for the detector to see them.</p>
+      </div>
+      <div class="step">
+        <span class="n">02</span>
+        <h4>Detect</h4>
+        <p>MM-Grounding-DINO runs zero-shot on every tile, prompted with the class name as free text rather than a fixed label set.</p>
+      </div>
+      <div class="step">
+        <span class="n">03</span>
+        <h4>Merge</h4>
+        <p>Tile predictions are stitched back to full-frame coordinates, with non-maximum merging resolving the duplicates that overlap creates.</p>
+      </div>
+      <div class="step">
+        <span class="n">04</span>
+        <h4>Segment</h4>
+        <p>SAM 2 turns each surviving box into an instance mask, then everything is written out as detection boxes, instance masks, and semantic PNGs.</p>
+      </div>
+    </div>
+
+    <div class="cfg">
+      <table>
+        <tr><td>Prompt</td><td>"person ."</td></tr>
+        <tr><td>Detector</td><td>MM-Grounding-DINO, Swin-T · confidence 0.35</td></tr>
+        <tr><td>Segmenter</td><td>SAM 2.1 Hiera-Large</td></tr>
+        <tr><td>Slicing</td><td>4096 × 4096, 0.6 overlap both axes</td></tr>
+        <tr><td>Merge</td><td>NMM, IoU match metric</td></tr>
+        <tr><td>Exports</td><td>YOLO · COCO · Pascal VOC · semantic PNG</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- THE AUDIT -->
+<section>
+  <div class="wrap">
+    <p class="eyebrow">The part that matters</p>
+    <h2>Pseudo-labels are a claim, not a result.</h2>
+
+    <div class="prose" style="margin-top:26px">
+      <p>
+        A zero-shot pipeline will label every image you give it. It will do that whether
+        or not the labels are any good, and it never tells you which ones it got wrong.
+        Accepting that output as ground truth means training on errors you can't see and
+        evaluating against them too — the failure hides in both halves at once.
+      </p>
+      <p>
+        So the output was treated as a first pass, not a finished dataset. I audited the
+        pseudo-labels for the failure modes this architecture actually produces —
+        duplicate instances surviving the tile merge, boundary artifacts where an object
+        straddles a slice edge, low-confidence detections on ambiguous thermal signatures,
+        and masks that latch onto the wrong extent of a partially occluded person.
+        Manual correction went where the audit pointed, instead of being spread evenly
+        across the set.
+      </p>
+      <p>
+        <b>That is where the 70% comes from.</b> Not from trusting the automation, but from
+        knowing precisely which fraction of it needed a human — and the downstream detector
+        reaching <b>mAP 0.94</b> is the evidence that the remaining labels held up.
+      </p>
+    </div>
+
+    <div class="callout">
+      <p style="margin:0">
+        The interesting engineering question in auto-labeling isn't "can a foundation model
+        label this?" — it can. It's "how do you find the labels it got wrong, before they
+        become the thing your model learns?"
+      </p>
+    </div>
+
+    <ul class="bullets">
+      <li><b>Zero-shot, no fine-tuning</b> — the class is a text prompt, so a new object category needs no retraining</li>
+      <li><b>Small-object recall</b> via sliced inference rather than a higher-resolution backbone</li>
+      <li><b>Targeted correction</b> driven by an explicit noise audit, not uniform review</li>
+      <li><b>Training-ready exports</b> in YOLO, COCO, and Pascal VOC, plus semantic masks</li>
+    </ul>
+
+    <div class="tags">
+      <span class="tag">Python</span><span class="tag">PyTorch</span><span class="tag">SAM 2</span><span class="tag">MM-Grounding-DINO</span><span class="tag">SAHI</span><span class="tag">MMDetection</span><span class="tag">OpenCV</span><span class="tag">COCO / YOLO / VOC</span>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT -->
+<section class="next">
+  <div class="wrap">
+    <p class="eyebrow">Elsewhere</p>
+    <h2>More of the same thinking.</h2>
+    <p class="lede" style="margin-top:20px">
+      Test-time adaptation under distribution shift, and a local-first multimodal
+      meeting assistant — both on the main page.
+    </p>
+    <div class="phero-actions">
+      <a class="btn ghost" href="index.html#work">See other work</a>
+      <a class="btn ghost" href="index.html#contact">Contact</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="foot-in">
+    <span>© 2026 Mariem Kbaier</span>
+    <span>Built with HTML, CSS, and JavaScript</span>
+  </div>
+</footer>
+
+<script>
+/* ---------- walkthrough player: controls, load on demand ---------- */
+(function(){
+  const fig = document.getElementById('player');
+  if(!fig) return;
+  const src = fig.dataset.media;
+  const poster = fig.dataset.poster;
+
+  const placeholder = () => {
+    fig.innerHTML =
+      '<div class="player-empty"><span class="icon">▶</span>' +
+      'Walkthrough goes here<span class="slot">' + src + '</span></div>';
+  };
+
+  const v = document.createElement('video');
+  v.controls = true;
+  v.playsInline = true;
+  v.preload = 'none';          // 2.5 MB should not load until someone asks for it
+  v.setAttribute('playsinline','');
+  if(poster) v.poster = poster;
+  v.addEventListener('error', placeholder, true);
+  v.src = src;
+  fig.appendChild(v);
+})();
+
+/* ---------- scroll reveal ---------- */
+(function(){
+  const els = document.querySelectorAll('.rv');
+  if(!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    els.forEach(e=>e.classList.add('in')); return;
+  }
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{rootMargin:'0px 0px -60px 0px'});
+  els.forEach(e=>io.observe(e));
+})();
+</script>
+</body>
+</html>

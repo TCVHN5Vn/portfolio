@@ -246,6 +246,8 @@ section{padding:clamp(56px,8vw,100px) 0}
 .demo-kicker{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
 .demo h3{font-size:clamp(21px,2.6vw,28px);font-weight:800;letter-spacing:-.02em;margin-bottom:12px}
 .demo p{font-size:15px;color:var(--ink-soft)}
+.demo-more{font-family:var(--mono);font-size:12px;letter-spacing:.05em;color:var(--indigo);text-decoration:none;border-bottom:1px solid var(--indigo-soft);padding-bottom:2px;transition:.18s ease}
+.demo-more:hover{border-bottom-color:var(--indigo)}
 .bullets{list-style:none;padding:0;margin:16px 0 0}
 .bullets li{font-size:14px;color:var(--ink-soft);padding-left:18px;position:relative;margin-bottom:7px}
 .bullets li::before{content:"";position:absolute;left:0;top:9px;width:7px;height:1px;background:var(--indigo)}
@@ -336,7 +338,7 @@ footer{background:var(--ink);color:#6E7587;border-top:1px solid #2A2F3B}
         <p class="name-kicker">Portfolio</p>
         <p class="name">Mariem Kbaier</p>
         <p class="role">AI Developer <span>·</span> Computer Vision &amp; Edge Deployment</p>
-        <p class="whereami">Montréal, Canada <span>·</span> open to relocation</p>
+        <p class="whereami">Tunisia <span>·</span> open to relocation</p>
       </div>
     </div>
 
@@ -346,8 +348,8 @@ footer{background:var(--ink);color:#6E7587;border-top:1px solid #2A2F3B}
         <p class="lede">
           I'm an AI developer working on computer vision and deep learning where the
           conditions keep changing — sensor drift, unseen environments, and hardware
-          with a strict latency budget. Currently researching test-time adaptation at
-          Concordia University, after two years shipping vision models onto robots.
+          with a strict latency budget. Most recently, a research term on test-time
+          adaptation at Concordia University — before that, two years shipping vision models onto robots.
         </p>
         <div class="hero-actions">
           <a class="btn solid" href="#work">See the work</a>
@@ -428,13 +430,13 @@ footer{background:var(--ink);color:#6E7587;border-top:1px solid #2A2F3B}
     <div style="margin-top:44px">
 
       <article class="tl-item rv">
-        <div class="tl-when"><span class="now">Jan 2026 — Present</span></div>
+        <div class="tl-when">Jan 2026 — Jul 2026</div>
         <div class="tl-body">
           <h3>Research Student, Machine Learning</h3>
           <div class="tl-where">Concordia University · Montréal, Canada</div>
           <ul>
-            <li>Developing <b>test-time adaptation</b> methods for models facing distribution shift, benchmarking DIGA, PETAL, and PeTTA on tabular sensor data from smart buildings.</li>
-            <li>Designing the ablation studies and evaluation protocols behind the comparison, with a manuscript in preparation for peer review.</li>
+            <li>Developed <b>test-time adaptation</b> methods for models facing distribution shift, benchmarking DIGA, PETAL, and PeTTA on tabular sensor data from smart buildings.</li>
+            <li>Designed the ablation studies and evaluation protocols behind the comparison, with a manuscript in preparation for peer review.</li>
           </ul>
           <div class="tags"><span class="tag">PyTorch</span><span class="tag">TTA</span><span class="tag">Distribution shift</span><span class="tag">Benchmarking</span></div>
         </div>
@@ -486,12 +488,46 @@ footer{background:var(--ink);color:#6E7587;border-top:1px solid #2A2F3B}
 <section id="work">
   <div class="wrap">
     <p class="eyebrow">Selected work</p>
-    <h2>Two projects, in motion.</h2>
-    <p class="lede" style="margin-top:20px">Both are running systems, not slide decks.</p>
+    <h2>Three projects, in motion.</h2>
+    <p class="lede" style="margin-top:20px">All three are running systems, not slide decks.</p>
 
     <div style="margin-top:52px">
 
       <!-- DEMO 1 -->
+      <article class="demo rv">
+        <div class="demo-grid">
+          <figure class="media" data-media="assets/labelling-demo.mp4" data-type="video" data-poster="assets/labelling-poster.jpg" style="margin:0"></figure>
+          <div>
+            <div class="demo-kicker">Applied · EagleProjects Tunisia</div>
+            <h3>Automated annotation, audited before it ships</h3>
+            <p>
+              Hand-labeling a detection dataset is the slowest part of most vision work.
+              This pipeline prompts a zero-shot detector with a class name, slices frames
+              so distant objects stay big enough to see, and turns every surviving box
+              into a SAM&nbsp;2 instance mask.
+            </p>
+            <p>
+              The automation is the easy half. What decided whether it was usable was
+              auditing the pseudo-labels for what this architecture actually gets wrong —
+              duplicate merges, slice-edge artifacts, masks on the wrong extent — and
+              spending manual correction only where the audit pointed.
+            </p>
+            <ul class="bullets">
+              <li>Roughly 70% less manual labeling on a thermal dataset</li>
+              <li>Downstream detector at mAP 0.94 on the corrected labels</li>
+              <li>Training-ready exports: YOLO, COCO, Pascal VOC</li>
+            </ul>
+            <div class="tags">
+              <span class="tag">SAM 2</span><span class="tag">Grounding DINO</span><span class="tag">SAHI</span><span class="tag">MMDetection</span><span class="tag">PyTorch</span>
+            </div>
+            <p style="margin:18px 0 0">
+              <a class="demo-more" href="labelling.html">Read the full walkthrough →</a>
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <!-- DEMO 2 -->
       <article class="demo rv">
         <div class="demo-grid">
           <figure class="media" data-media="assets/tta-demo.mp4" data-type="video" data-poster="assets/tta-poster.jpg" style="margin:0"></figure>
@@ -521,7 +557,7 @@ footer{background:var(--ink);color:#6E7587;border-top:1px solid #2A2F3B}
         </div>
       </article>
 
-      <!-- DEMO 2 -->
+      <!-- DEMO 3 -->
       <article class="demo rv">
         <div class="demo-grid">
           <figure class="media" data-media="assets/llm-demo.mp4" data-type="video" data-poster="assets/llm-poster.jpg" style="margin:0"></figure>
@@ -640,7 +676,7 @@ footer{background:var(--ink);color:#6E7587;border-top:1px solid #2A2F3B}
     <h2>Open to AI and computer vision roles.</h2>
     <p class="lede" style="margin-top:22px">
       I'm looking for work on applied computer vision, model robustness, or edge
-      deployment — in industry or in a research group. Based in Montréal, open to
+      deployment — in industry or in a research group. Based in Tunisia, open to
       relocation.
     </p>
     <div class="clinks">
